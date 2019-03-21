@@ -1,0 +1,40 @@
+diff --git a/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigure/security/SecurityManagedConfiguration.java b/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigure/security/SecurityManagedConfiguration.java
+index 43d2265..d554d8e 100644
+--- a/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigure/security/SecurityManagedConfiguration.java
++++ b/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigure/security/SecurityManagedConfiguration.java
+@@ -86,6 +86,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
+ import org.springframework.security.web.session.HttpSessionEventPublisher;
+ import org.springframework.security.web.session.SessionManagementFilter;
+ import org.springframework.util.StringUtils;
++import org.springframework.web.cors.CorsConfiguration;
++import org.springframework.web.cors.CorsConfigurationSource;
++import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+ import org.vaadin.spring.security.VaadinSecurityContext;
+ import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
+ import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
+@@ -449,6 +452,16 @@ public class SecurityManagedConfiguration {
+                     ddiSecurityConfiguration.getRp().getTrustedIPs()));
+         }
+     }
++	@Bean
++	CorsConfigurationSource corsConfigurationSource() {
++		CorsConfiguration configuration = new CorsConfiguration();
++		configuration.setAllowedOrigins(Arrays.asList("*"));
++		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "OPTIONS", "DELETE"));
++		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
++		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
++		source.registerCorsConfiguration("/**", configuration);
++		return source;
++	}
+
+     /**
+      * Security configuration for the REST management API.
+@@ -499,7 +512,7 @@ public class SecurityManagedConfiguration {
+             final BasicAuthenticationEntryPoint basicAuthEntryPoint = new BasicAuthenticationEntryPoint();
+             basicAuthEntryPoint.setRealmName(springSecurityProperties.getBasic().getRealm());
+
+-            HttpSecurity httpSec = http.regexMatcher("\\/rest.*|\\/system/admin.*").csrf().disable();
++            HttpSecurity httpSec = http.cors().and().regexMatcher("\\/rest.*|\\/system/admin.*").csrf().disable();
+             if (springSecurityProperties.isRequireSsl()) {
+                 httpSec = httpSec.requiresChannel().anyRequest().requiresSecure().and();
+             }
