@@ -2,7 +2,7 @@ diff --git a/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigu
 index 43d2265..d554d8e 100644
 --- a/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigure/security/SecurityManagedConfiguration.java
 +++ b/hawkbit-autoconfigure/src/main/java/org/eclipse/hawkbit/autoconfigure/security/SecurityManagedConfiguration.java
-@@ -86,6 +86,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
+@@ -85,6 +85,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
  import org.springframework.security.web.session.HttpSessionEventPublisher;
  import org.springframework.security.web.session.SessionManagementFilter;
  import org.springframework.util.StringUtils;
@@ -12,7 +12,7 @@ index 43d2265..d554d8e 100644
  import org.vaadin.spring.security.VaadinSecurityContext;
  import org.vaadin.spring.security.annotation.EnableVaadinSecurity;
  import org.vaadin.spring.security.web.VaadinDefaultRedirectStrategy;
-@@ -449,6 +452,16 @@ public class SecurityManagedConfiguration {
+@@ -446,6 +449,16 @@ public class SecurityManagedConfiguration {
                      ddiSecurityConfiguration.getRp().getTrustedIPs()));
          }
      }
@@ -29,12 +29,12 @@ index 43d2265..d554d8e 100644
 
      /**
       * Security configuration for the REST management API.
-@@ -499,7 +512,7 @@ public class SecurityManagedConfiguration {
+@@ -496,7 +509,7 @@ public class SecurityManagedConfiguration {
              final BasicAuthenticationEntryPoint basicAuthEntryPoint = new BasicAuthenticationEntryPoint();
-             basicAuthEntryPoint.setRealmName(springSecurityProperties.getBasic().getRealm());
+             basicAuthEntryPoint.setRealmName(securityProperties.getBasicRealm());
 
 -            HttpSecurity httpSec = http.regexMatcher("\\/rest.*|\\/system/admin.*").csrf().disable();
 +            HttpSecurity httpSec = http.cors().and().regexMatcher("\\/rest.*|\\/system/admin.*").csrf().disable();
-             if (springSecurityProperties.isRequireSsl()) {
+             if (securityProperties.isRequireSsl()) {
                  httpSec = httpSec.requiresChannel().anyRequest().requiresSecure().and();
              }
