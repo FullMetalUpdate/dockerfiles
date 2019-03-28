@@ -1,4 +1,4 @@
-FROM openjdk:8u191-jre-alpine
+FROM openjdk:8u201-jre-alpine
 
 MAINTAINER Cedric Vincent <cvincent@witekio.com>
 
