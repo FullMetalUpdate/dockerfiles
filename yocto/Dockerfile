@@ -15,7 +15,7 @@ ENV YOCTO_ENTRYPOINT ${YOCTO_ENTRYPOINT:-/yocto-entrypoint.sh}
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && apt-get update && apt-get install -y locales \
     && apt-get -q -y install \
-        gawk wget git-core diffstat unzip texinfo gcc-multilib g++-multilib \
+        nano gawk wget git-core diffstat unzip texinfo gcc-multilib g++-multilib \
         build-essential chrpath socat libsdl1.2-dev xterm \
         bc cpio curl iputils-ping python3 python3-gi sudo dosfstools sshpass \
         e2fslibs-dev libgpgme11-dev \
