@@ -21,10 +21,14 @@ RUN DEBIAN_FRONTEND=noninteractive \
         e2fslibs-dev libgpgme11-dev \
         libarchive-dev libattr1-dev libcap-dev libfuse-dev libgirepository1.0-dev \
         libsoup2.4-dev autoconf bison libtool liblzma-dev \
+        vim tmux libncurses5-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/*
+
+# Configure tmux to allow scrolling
+RUN echo "set -g mouse on" > /etc/tmux.conf
 
 # Compile and install 'OSTree' and 'repo'
 WORKDIR /home/
