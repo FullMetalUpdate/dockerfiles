@@ -24,7 +24,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
         xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
         pylint3 xterm \
         \
-        g++-multilib bc cpio curl python3-gi sudo dosfstools sshpass \
+        g++-multilib bc curl python3-gi sudo dosfstools sshpass \
         libarchive-dev libattr1-dev libcap-dev libfuse-dev libgirepository1.0-dev \
         libsoup2.4-dev autoconf bison libtool liblzma-dev e2fslibs-dev libgpgme-dev \
         nano vim tmux libncurses5-dev \
