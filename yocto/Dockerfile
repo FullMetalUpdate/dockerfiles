@@ -33,6 +33,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/*
 
+# Workaround to solve issue about _sysconfigdata module not found
+RUN ln -s /usr/lib/python3.6/_sysconfigdata_m_linux_x86_64-linux-gnu.py /usr/lib/python3.6/_sysconfigdata.py
+
 # Configure tmux to allow scrolling
 RUN echo "set -g mouse on" > /etc/tmux.conf
 
