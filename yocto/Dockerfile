@@ -39,6 +39,16 @@ RUN ln -s /usr/lib/python3.6/_sysconfigdata_m_linux_x86_64-linux-gnu.py /usr/lib
 # Configure tmux to allow scrolling
 RUN echo "set -g mouse on" > /etc/tmux.conf
 
+# Install azcopy to push data to Azure Cloud
+RUN mkdir /azcopy \
+    && cd /azcopy \
+    && wget https://aka.ms/downloadazcopy-v10-linux \
+    && tar -xvf downloadazcopy-v10-linux \
+    && cp /azcopy/azcopy_linux_amd64*/azcopy /usr/bin \
+    && chmod a+x /usr/bin/azcopy \
+    && cd - \
+    && rm -rf /azcopy
+
 # Compile and install 'OSTree' and 'repo'
 WORKDIR /home/
 ENV OSTREE_VERSION v2020.8
