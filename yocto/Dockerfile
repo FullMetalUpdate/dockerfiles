@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 ARG PUID
 ENV PUID=${PUID:-1000}
@@ -11,17 +11,23 @@ ENV DATADIR ${DATADIR:-/data}
 
 ENV YOCTO_ENTRYPOINT ${YOCTO_ENTRYPOINT:-/yocto-entrypoint.sh}
 
+# Avoid blocking on tzdata configuration step
+ENV TZ=Europe/Paris
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Install packages to build yocto and ostree packages
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get clean && apt-get update && apt-get install -y locales \
     && apt-get -q -y install \
-        nano gawk wget git-core diffstat unzip texinfo gcc-multilib g++-multilib \
-        build-essential chrpath socat libsdl1.2-dev xterm \
-        bc cpio curl iputils-ping python3 python3-gi sudo dosfstools sshpass \
-        e2fslibs-dev libgpgme11-dev \
+        gawk wget git-core diffstat unzip texinfo gcc-multilib \
+        build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+        xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+        pylint3 xterm \
+        \
+        g++-multilib bc cpio curl python3-gi sudo dosfstools sshpass \
         libarchive-dev libattr1-dev libcap-dev libfuse-dev libgirepository1.0-dev \
-        libsoup2.4-dev autoconf bison libtool liblzma-dev \
-        vim tmux libncurses5-dev \
+        libsoup2.4-dev autoconf bison libtool liblzma-dev e2fslibs-dev libgpgme-dev \
+        nano vim tmux libncurses5-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
@@ -32,7 +38,7 @@ RUN echo "set -g mouse on" > /etc/tmux.conf
 
 # Compile and install 'OSTree' and 'repo'
 WORKDIR /home/
-ENV OSTREE_VERSION v2018.9
+ENV OSTREE_VERSION v2020.8
 RUN git clone git://github.com/ostreedev/ostree.git;branch=master \
     && (cd ostree \
         && git checkout $OSTREE_VERSION \
