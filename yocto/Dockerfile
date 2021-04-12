@@ -24,7 +24,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
         xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
         pylint3 xterm \
         \
-        g++-multilib bc cpio curl python3-gi sudo dosfstools sshpass \
+        g++-multilib bc curl python3-gi sudo dosfstools sshpass \
         libarchive-dev libattr1-dev libcap-dev libfuse-dev libgirepository1.0-dev \
         libsoup2.4-dev autoconf bison libtool liblzma-dev e2fslibs-dev libgpgme-dev \
         nano vim tmux libncurses5-dev \
@@ -33,8 +33,21 @@ RUN DEBIAN_FRONTEND=noninteractive \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/*
 
+# Workaround to solve issue about _sysconfigdata module not found
+RUN ln -s /usr/lib/python3.6/_sysconfigdata_m_linux_x86_64-linux-gnu.py /usr/lib/python3.6/_sysconfigdata.py
+
 # Configure tmux to allow scrolling
 RUN echo "set -g mouse on" > /etc/tmux.conf
+
+# Install azcopy to push data to Azure Cloud
+RUN mkdir /azcopy \
+    && cd /azcopy \
+    && wget https://aka.ms/downloadazcopy-v10-linux \
+    && tar -xvf downloadazcopy-v10-linux \
+    && cp /azcopy/azcopy_linux_amd64*/azcopy /usr/bin \
+    && chmod a+x /usr/bin/azcopy \
+    && cd - \
+    && rm -rf /azcopy
 
 # Compile and install 'OSTree' and 'repo'
 WORKDIR /home/
