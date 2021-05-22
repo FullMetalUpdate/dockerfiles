@@ -1,8 +1,8 @@
-FROM openjdk:8u191-jre-alpine
+FROM openjdk:8u121-jre-alpine
 
 MAINTAINER Cedric Vincent <cvincent@witekio.com>
 
-ENV HAWKBIT_VERSION=0.2.5 \
+ENV HAWKBIT_VERSION=0.3.0M4 \
     HAWKBIT_HOME=/opt/hawkbit \
     JAR_FILE=hawkbit-update-server.jar
 
